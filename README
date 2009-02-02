@@ -1,1 +1,34 @@
-created
+= PoolParty MRTG plugin
+
+== DESCRIPTION:
+  Setup mrtg on poolparty easy as pie
+  
+== USAGE:
+  Declare mrtg in your cloud block
+    mrtg do
+    end    
+
+== EXAMPLE:
+    mrtg do
+      install
+      install_extra_monitorings
+    end
+
+== Available Methods
+  = install_extra_monitorings
+    Installs a bunch of monitoring scripts and configs for you
+
+== NOTICE:
+  This should be considered pre-beta software. It enables smtp on your nodes.
+  Please make sure you understand the security ramifications of doing this.
+
+  Additionally, the scripts have only been tested in a production environment
+  for a short time.
+
+== BUGS:
+  * Each individual unit of monitoring should become a virtual resource. This is
+  a TODO
+
+  * "ExtendedStatus On" needs to be manually added to an apache conf file to
+    get apache monitoring
+

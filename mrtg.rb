@@ -1,7 +1,8 @@
 require ::File.join(File.dirname(__FILE__), "virtual_resources")
+require ::File.join(File.dirname(__FILE__), "monitorings")
 module PoolParty
   class Plugins
-    
+    include PoolParty::Mrtg::Monitorings
     # MRTG plugin for poolparty
     #
     #
@@ -73,10 +74,28 @@ module PoolParty
         end
       end
 
+      def monitor(*names)
+      end
 
-      # */10  /usr/lib/sysstat/sa1 -d 1 1
-      # 53 23 /usr/lib/sysstat/sa2 -A
+      def install_extra_monitorings
+        unless @installed_extra_monitorings
+          # install sysstat
+          has_package("sysstat")
 
+          has_cron(:name => "Run sysstat sa1", 
+                   :command => "/usr/lib/sysstat/sa1 -d 1 1",
+                   :minute => "*/10")
+
+          has_cron(:name => "Run sysstat sa2", 
+                   :command => "/usr/lib/sysstat/sa2 -A",
+                   :hour   => "23",
+                   :minute => "53")
+
+          present_apache_module("status")
+
+          @installed_extra_monitorings = true
+        end
+      end
 
     end
   end

@@ -1,4 +1,4 @@
 module PoolParty
-  # virtual_resource(:standard_monitoring_package) do
-  # end
+  virtual_resource(:mrtg_monitor) do
+  end
 end
