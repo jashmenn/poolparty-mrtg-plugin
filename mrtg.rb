@@ -2,7 +2,6 @@ require ::File.join(File.dirname(__FILE__), "virtual_resources")
 require ::File.join(File.dirname(__FILE__), "monitorings")
 module PoolParty
   class Plugins
-    include PoolParty::Mrtg::Monitorings
     # MRTG plugin for poolparty
     #
     #
@@ -18,6 +17,7 @@ module PoolParty
     #    snmpwalk -v 1 -c poolpartycommunity localhost IP-MIB::ipAdEntIfIndex
     # 
     plugin :mrtg do
+      include PoolParty::Mrtg::Monitorings
       def enable
         install
       end
@@ -68,7 +68,7 @@ module PoolParty
                     :template => File.dirname(__FILE__) + "/templates/snmpd",
                     :mode => 644})
 
-           has_file({:name => "/etc/snmp/snmpd.conf", 
+          has_file({:name => "/etc/snmp/snmpd.conf", 
                     :template => File.dirname(__FILE__) + "/templates/snmpd.conf",
                     :mode => 644})
 
@@ -77,30 +77,31 @@ module PoolParty
       end
 
       def monitor(*names)
-        names.each do |name|
-          self.send("enable_#{name}")
+        unless @installed_mrtg_monitors
+          install_monitor_base_binaries
+          names.each do |name|
+            self.send("enable_#{name}")
+          end
+          @installed_mrtg_monitors = true
         end
       end
 
-      def install_extra_monitorings# {{{
-        unless @installed_extra_monitorings
-          # install sysstat
-          has_package("sysstat")
+      def install_monitor_base_binaries
+        has_directory("/usr/bin/mrtg")
+        present_apache_module("status")
 
-          has_cron(:name => "Run sysstat sa1", 
-                   :command => "/usr/lib/sysstat/sa1 -d 1 1",
-                   :minute => "*/10")
-
-          has_cron(:name => "Run sysstat sa2", 
-                   :command => "/usr/lib/sysstat/sa2 -A",
-                   :hour   => "23",
-                   :minute => "53")
-
-          present_apache_module("status")
-
-          @installed_extra_monitorings = true
+        Dir.glob(File.dirname(__FILE__) + "/templates/bin/*.*").each do |filename| 
+          helper_bin(File.basename(filename))
         end
-      end# }}}
+      end
+
+      def helper_bin(name, ensureer='present')
+        has_file(:name => "/usr/bin/mrtg/#{name}") do
+          template File.dirname(__FILE__) + "/templates/bin/#{name}"
+          ensures ensureer          
+          mode 755
+        end
+      end
 
     end
   end
