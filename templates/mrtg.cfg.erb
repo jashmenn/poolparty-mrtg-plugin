@@ -1,5 +1,5 @@
 # Created by 
-# /usr/bin/cfgmaker --global 'WorkDir: /var/www/mrtg' --output ./mymrtg.cfg poolpartycommunity@localhost
+# /usr/bin/cfgmaker --global 'WorkDir: /var/www/mrtg' --output ./mymrtg.cfg <%= community_name %>@localhost
 
 ### Global Config Options
 WorkDir: /var/www/mrtg
@@ -23,16 +23,16 @@ WorkDir: /var/www/mrtg
 ### The following interface is commented out because:
 ### * it is a Software Loopback interface
 # 
-# Target[localhost_lo]: #lo:poolpartycommunity@localhost:
+# Target[localhost_lo]: #lo:<%= community_name %>@localhost:
 # SetEnv[localhost_lo]: MRTG_INT_IP="127.0.0.1" MRTG_INT_DESCR="lo"
 # MaxBytes[localhost_lo]: 1250000
-# Title[localhost_lo]: Traffic Analysis for lo -- node1
-# PageTop[localhost_lo]: <h1>Traffic Analysis for lo -- node1</h1>
+# Title[localhost_lo]: Traffic Analysis for lo -- <%= hostname %>
+# PageTop[localhost_lo]: <h1>Traffic Analysis for lo -- <%= hostname %></h1>
 # 		<div id="sysdetails">
 # 			<table>
 # 				<tr>
 # 					<td>System:</td>
-# 					<td>node1 in Unknown (configure /etc/snmp/snmpd.local.conf)</td>
+# 					<td><%= hostname %> in Unknown (configure /etc/snmp/snmpd.local.conf)</td>
 # 				</tr>
 # 				<tr>
 # 					<td>Maintainer:</td>
@@ -62,18 +62,18 @@ WorkDir: /var/www/mrtg
 # 		</div>
 
 
-### Interface 2 >> Descr: 'eth0' | Name: 'eth0' | Ip: '10.252.166.18' | Eth: '12-31-38-00-a1-e4' ###
+### Interface 2 >> Descr: 'eth0' | Name: 'eth0' | Ip: '<%= internal_ip %>' | Eth: '12-31-38-00-a1-e4' ###
 
-Target[localhost_eth0]: #eth0:poolpartycommunity@localhost:
-SetEnv[localhost_eth0]: MRTG_INT_IP="10.252.166.18" MRTG_INT_DESCR="eth0"
+Target[localhost_eth0]: #eth0:<%= community_name %>@localhost:
+SetEnv[localhost_eth0]: MRTG_INT_IP="<%= internal_ip %>" MRTG_INT_DESCR="eth0"
 MaxBytes[localhost_eth0]: 1250000
-Title[localhost_eth0]: Traffic Analysis for eth0 -- node1
-PageTop[localhost_eth0]: <h1>Traffic Analysis for eth0 -- node1</h1>
+Title[localhost_eth0]: Traffic Analysis for eth0 -- <%= hostname %>
+PageTop[localhost_eth0]: <h1>Traffic Analysis for eth0 -- <%= hostname %></h1>
 		<div id="sysdetails">
 			<table>
 				<tr>
 					<td>System:</td>
-					<td>node1 in Unknown (configure /etc/snmp/snmpd.local.conf)</td>
+					<td><%= hostname %> in Unknown (configure /etc/snmp/snmpd.local.conf)</td>
 				</tr>
 				<tr>
 					<td>Maintainer:</td>
@@ -97,7 +97,7 @@ PageTop[localhost_eth0]: <h1>Traffic Analysis for eth0 -- node1</h1>
 				</tr>
 				<tr>
 					<td>Ip:</td>
-					<td>10.252.166.18 (node1.app)</td>
+					<td><%= internal_ip %> (<%= hostname %>.app)</td>
 				</tr>
 			</table>
 		</div>
@@ -105,8 +105,8 @@ PageTop[localhost_eth0]: <h1>Traffic Analysis for eth0 -- node1</h1>
 
 WorkDir: /var/www/mrtg
 LoadMIBs: /usr/share/snmp/mibs/UCD-SNMP-MIB.txt
-Target[localhost.cpu]:ssCpuRawUser.0&ssCpuRawUser.0:poolpartycommunity@127.0.0.1+ ssCpuRawSystem.0&ssCpuRawSystem.0:poolpartycommunity@127.0.0.1+ ssCpuRawNice.0&ssCpuRawNice.0:poolpartycommunity@127.0.0.1
-RouterUptime[localhost.cpu]: poolpartycommunity@127.0.0.1
+Target[localhost.cpu]:ssCpuRawUser.0&ssCpuRawUser.0:<%= community_name %>@127.0.0.1+ ssCpuRawSystem.0&ssCpuRawSystem.0:<%= community_name %>@127.0.0.1+ ssCpuRawNice.0&ssCpuRawNice.0:<%= community_name %>@127.0.0.1
+RouterUptime[localhost.cpu]: <%= community_name %>@127.0.0.1
 MaxBytes[localhost.cpu]: 100
 Title[localhost.cpu]: CPU Load
 PageTop[localhost.cpu]: <H1>Active CPU Load %</H1>
@@ -123,7 +123,7 @@ Options[localhost.cpu]: growright,nopercent
 
 
 LoadMIBs: /usr/share/snmp/mibs/HOST-RESOURCES-MIB.txt
-Target[localhost.mem]: .1.3.6.1.4.1.2021.4.6.0&.1.3.6.1.4.1.2021.4.6.0:poolpartycommunity@localhost
+Target[localhost.mem]: .1.3.6.1.4.1.2021.4.6.0&.1.3.6.1.4.1.2021.4.6.0:<%= community_name %>@localhost
 PageTop[localhost.mem]: <H1>Free Memory</H1>
 WorkDir: /var/www/mrtg
 Options[localhost.mem]: nopercent,growright,gauge,noinfo
