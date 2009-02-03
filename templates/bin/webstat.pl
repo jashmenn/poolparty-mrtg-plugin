@@ -9,17 +9,19 @@
 #    Allow from localhost
 #</Location>
 #ExtendedStatus On
+#
+# TODO - have the port here be a variable
 
 # can return hits or bytes (counters)
 
-@res = `lynx -dump http://localhost:80/server-status`;
+@res = `lynx -dump http://localhost:8080/server-status`;
 
 foreach $res (@res) {
     if ($res =~ /Server uptime: (.*)$/) { $up = $1; last } else { next }
     if ($res =~ /Server at/) { $server = $res; last } else { next }
 }
 
-@res = `lynx -dump http://localhost:80/server-status?auto`;
+@res = `lynx -dump http://localhost:8080/server-status?auto`;
 
 foreach $res (@res) {
     if ($res =~ /Total Accesses: (\d+)/) { $d1 = $1; next }
