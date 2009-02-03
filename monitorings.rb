@@ -17,6 +17,7 @@ module PoolParty
 
       def enable_apache
         present_apache_module("status")
+        has_package("lynx") # todo, remove this dependency
       end
 
       # The enable statements below are not required to add something to the

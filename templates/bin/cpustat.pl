@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-@line = `/usr/local/bin/sar | /usr/bin/tail -n 2 | /usr/bin/head -n 1 | /bin/sed 's/\ \ */ /g'`;
+@line = `/usr/bin/sar | /usr/bin/tail -n 2 | /usr/bin/head -n 1 | /bin/sed 's/\ \ */ /g'`;
 
 @data = split(/ /, @line[0]);
 if (@data[2] eq "") {
