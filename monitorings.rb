@@ -73,6 +73,9 @@ EOF
       def enable_snmp_network
       end
 
+      def enable_network_interfaces
+      end
+
     end
   end
 end
