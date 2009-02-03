@@ -64,7 +64,7 @@ EOF
       def enable_uptime
       end
 
-      def enable_free_memory
+      def enable_snmp_free_memory
       end
 
       def enable_open_files
