@@ -1,5 +1,9 @@
 = PoolParty MRTG plugin
 
+== NOTICE:
+  Untested as of Feb 2nd. MRTG config still need tweaked for Ubuntu AMI. You
+  have been warned! Should be ready for production testing this week.
+
 == DESCRIPTION:
   Setup mrtg on poolparty easy as pie
   
@@ -31,3 +35,6 @@
   * "ExtendedStatus On" needs to be manually added to an apache conf file to
     get apache monitoring
 
+  * Would be nice to have snmp be optional and monitor most things via scripts
+    that don't require it
+  
