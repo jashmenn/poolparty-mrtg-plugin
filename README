@@ -6,17 +6,16 @@
 == USAGE:
   Declare mrtg in your cloud block
     mrtg do
-    end    
-
-== EXAMPLE:
-    mrtg do
-      install
-      install_extra_monitorings
+      monitor :cpu, :uptime, :free_memory, :processes, :snmp_network, :apache
     end
 
-== Available Methods
-  = install_extra_monitorings
-    Installs a bunch of monitoring scripts and configs for you
+== Available Monitors
+  * :cpu
+  * :uptime
+  * :free_memory
+  * :processes
+  * :snmp_network
+  * :apache
 
 == NOTICE:
   This should be considered pre-beta software. It enables smtp on your nodes.

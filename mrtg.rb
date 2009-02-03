@@ -77,6 +77,7 @@ module PoolParty
       def create_configs
         unless @configs
           has_variable(:name => "community_name", :value => "poolpartycommunity")
+          has_variable(:name => "mrtg_bin_dir",   :value => "/usr/bin/mrtg")
           has_variable(:name => "internal_ip", :value => "generate('/usr/bin/curl', '-s', 'http://169.254.169.254/latest/meta-data/local-ipv4')") # or hostname -i | cut -d " " -f3-
 
           has_file({:name => "/etc/default/snmpd", 
