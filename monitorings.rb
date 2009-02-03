@@ -13,7 +13,6 @@ module PoolParty
                    :command => "/usr/lib/sysstat/sa2 -A",
                    :hour   => "23",
                    :minute => "53")
-
       end
 
       def enable_uptime

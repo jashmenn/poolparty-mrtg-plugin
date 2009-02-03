@@ -74,14 +74,10 @@ module PoolParty
         end
       end
 
-      def configs
+      def create_configs
         unless @configs
           has_variable(:name => "community_name", :value => "poolpartycommunity")
           has_variable(:name => "internal_ip", :value => "generate('/usr/bin/curl', '-s', 'http://169.254.169.254/latest/meta-data/local-ipv4')") # or hostname -i | cut -d " " -f3-
-
-          has_file({:name => "/etc/mrtg.cfg", 
-                    :template => File.dirname(__FILE__) + "/templates/mrtg.cfg.erb",
-                    :mode => 644})
 
           has_file({:name => "/etc/default/snmpd", 
                     :template => File.dirname(__FILE__) + "/templates/snmpd",
@@ -89,6 +85,21 @@ module PoolParty
 
           has_file({:name => "/etc/snmp/snmpd.conf", 
                     :template => File.dirname(__FILE__) + "/templates/snmpd.conf",
+                    :mode => 644})
+
+          # concat all monitor configs
+          mrtg_cnf = File.read(File.dirname(__FILE__) + "/templates/mrtg.cfg.erb")
+          @@monitors.each do |name| 
+            cf = File.dirname(__FILE__) + "/templates/cfg/#{name}.cfg"
+            (mrtg_cnf << "\n" << File.read(cf)) if File.exists?(cf)
+          end
+
+          File.open(PoolParty::Cloud::Base.storage_directory + "/templates/mrtg.cfg.erb", "w") do |f|
+            f << mrtg_cnf
+          end
+
+          has_file({:name => "/etc/mrtg.cfg", 
+                    :content => "template('mrtg.cfg.erb')",
                     :mode => 644})
 
           @configs = true

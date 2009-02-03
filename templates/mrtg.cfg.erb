@@ -102,38 +102,4 @@ PageTop[localhost_eth0]: <h1>Traffic Analysis for eth0 -- <%= hostname %></h1>
 			</table>
 		</div>
 
-
-WorkDir: /var/www/mrtg
-LoadMIBs: /usr/share/snmp/mibs/UCD-SNMP-MIB.txt
-Target[localhost.cpu]:ssCpuRawUser.0&ssCpuRawUser.0:<%= community_name %>@127.0.0.1+ ssCpuRawSystem.0&ssCpuRawSystem.0:<%= community_name %>@127.0.0.1+ ssCpuRawNice.0&ssCpuRawNice.0:<%= community_name %>@127.0.0.1
-RouterUptime[localhost.cpu]: <%= community_name %>@127.0.0.1
-MaxBytes[localhost.cpu]: 100
-Title[localhost.cpu]: CPU Load
-PageTop[localhost.cpu]: <H1>Active CPU Load %</H1>
-Unscaled[localhost.cpu]: ymwd
-ShortLegend[localhost.cpu]: %
-YLegend[localhost.cpu]: CPU Utilization
-Legend1[localhost.cpu]: Active CPU in % (Load)
-Legend2[localhost.cpu]:
-Legend3[localhost.cpu]:
-Legend4[localhost.cpu]:
-LegendI[localhost.cpu]: Active
-LegendO[localhost.cpu]:
-Options[localhost.cpu]: growright,nopercent
-
-
-LoadMIBs: /usr/share/snmp/mibs/HOST-RESOURCES-MIB.txt
-Target[localhost.mem]: .1.3.6.1.4.1.2021.4.6.0&.1.3.6.1.4.1.2021.4.6.0:<%= community_name %>@localhost
-PageTop[localhost.mem]: <H1>Free Memory</H1>
-WorkDir: /var/www/mrtg
-Options[localhost.mem]: nopercent,growright,gauge,noinfo
-Title[localhost.mem]: Free Memory
-MaxBytes[localhost.mem]: 1000000
-kMG[localhost.mem]: k,M,G,T,P,X
-YLegend[localhost.mem]: bytes
-ShortLegend[localhost.mem]: bytes
-LegendI[localhost.mem]: Free Memory:
-LegendO[localhost.mem]:
-Legend1[localhost.mem]: Free memory, not including swap, in bytes
-
 # vim: ft=config
