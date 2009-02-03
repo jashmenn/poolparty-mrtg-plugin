@@ -1,4 +1,3 @@
-require ::File.join(File.dirname(__FILE__), "virtual_resources")
 require ::File.join(File.dirname(__FILE__), "monitorings")
 module PoolParty
   class Plugins
@@ -18,7 +17,16 @@ module PoolParty
     # 
     plugin :mrtg do
       include PoolParty::Mrtg::Monitorings
+
       def enable
+        install
+      end
+
+      def monitor(*names)
+        unless @installed_mrtg_monitors
+          names.each {|arg| (@@monitors ||= []) << arg}
+          @installed_mrtg_monitors = true
+        end
         install
       end
             
@@ -29,7 +37,9 @@ module PoolParty
 
           has_directory("/var/www/mrtg", :requires => get_package("mrtg"))
 
-          configs
+          prepare_monitors
+          install_monitor_base_binaries
+          create_configs
 
           has_exec(:name => "generate_mrtg_index_file", 
             :command => "/usr/bin/indexmaker --output=/var/www/mrtg/index.html /etc/mrtg.cfg", 
@@ -55,6 +65,15 @@ module PoolParty
         end
       end
 
+      def prepare_monitors
+        unless @prepared_mrtg_monitors
+          @@monitors.each do |name|
+            self.send("enable_#{name}")
+          end
+          @prepared_mrtg_monitors = true
+        end
+      end
+
       def configs
         unless @configs
           has_variable(:name => "community_name", :value => "poolpartycommunity")
@@ -76,19 +95,8 @@ module PoolParty
         end
       end
 
-      def monitor(*names)
-        unless @installed_mrtg_monitors
-          install_monitor_base_binaries
-          names.each do |name|
-            self.send("enable_#{name}")
-          end
-          @installed_mrtg_monitors = true
-        end
-      end
-
       def install_monitor_base_binaries
         has_directory("/usr/bin/mrtg")
-        present_apache_module("status")
 
         Dir.glob(File.dirname(__FILE__) + "/templates/bin/*.*").each do |filename| 
           helper_bin(File.basename(filename))
