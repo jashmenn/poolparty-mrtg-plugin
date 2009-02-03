@@ -123,6 +123,13 @@ module PoolParty
         end
       end
 
+      def enable_apache_ssi # todo
+        # apache_load_module("include")
+        # Options +Includes
+        # XBitHack on
+        # chmod +x /var/www/mrtg/index.html
+      end
+
     end
   end
 end
