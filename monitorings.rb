@@ -15,11 +15,36 @@ module PoolParty
                    :minute => "53")
       end
 
+      def enable_apache
+        present_apache_module("status")
+      end
+
+      # The enable statements below are not required to add something to the
+      # mrtg config. However, they can be used if you want to enable specific
+      # dependencies for a particular monitoring.
+
       def enable_uptime
       end
 
-      def enable_apache
-        present_apache_module("status")
+      def enable_disk 
+      end
+
+      def enable_memory
+      end
+      
+      def enable_processes
+      end
+      
+      def enable_uptime
+      end
+
+      def enable_free_memory
+      end
+
+      def enable_open_files
+      end 
+
+      def enable_snmp_network
       end
 
     end
