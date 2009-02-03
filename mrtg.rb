@@ -43,7 +43,7 @@ module PoolParty
 
           has_exec(:name => "generate_mrtg_index_file", 
             :command => "/usr/bin/indexmaker --output=/var/www/mrtg/index.html /etc/mrtg.cfg", 
-            :ifnot => "test -f /etc/apache2/conf.d/passenger.conf",
+            # :ifnot => "test -f /var/www/mrtg/index.html",
             :requires => [get_directory("/var/www/mrtg"), get_file("/etc/mrtg.cfg")]
             )
 
@@ -77,7 +77,7 @@ module PoolParty
       def create_configs
         unless @configs
           has_variable(:name => "community_name", :value => "poolpartycommunity")
-          has_variable(:name => "mrtg_bin_dir",   :value => "/usr/bin/mrtg")
+          has_variable(:name => "mrtg_bin_dir",   :value => "/usr/bin/mrtg_helpers")
           has_variable(:name => "internal_ip", :value => "generate('/usr/bin/curl', '-s', 'http://169.254.169.254/latest/meta-data/local-ipv4')") # or hostname -i | cut -d " " -f3-
 
           has_file({:name => "/etc/default/snmpd", 
@@ -108,7 +108,7 @@ module PoolParty
       end
 
       def install_monitor_base_binaries
-        has_directory("/usr/bin/mrtg")
+        has_directory("/usr/bin/mrtg_helpers")
 
         Dir.glob(File.dirname(__FILE__) + "/templates/bin/*.*").each do |filename| 
           helper_bin(File.basename(filename))
@@ -116,7 +116,7 @@ module PoolParty
       end
 
       def helper_bin(name, ensureer='present')
-        has_file(:name => "/usr/bin/mrtg/#{name}") do
+        has_file(:name => "/usr/bin/mrtg_helpers/#{name}") do
           template File.dirname(__FILE__) + "/templates/bin/#{name}"
           ensures ensureer          
           mode 755
