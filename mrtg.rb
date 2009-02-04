@@ -51,6 +51,7 @@ module PoolParty
                    :command => "/usr/bin/env LANG=C /usr/bin/mrtg /etc/mrtg.cfg --logging /var/log/mrtg.log", 
                    :minute => "*/5")
 
+
           @installed = true
         end    
 
