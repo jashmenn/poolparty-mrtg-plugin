@@ -37,10 +37,14 @@ mod_status =<<EOF
 EOF
 
         has_file({:content => mod_status, 
-                  :name => "/etc/apache2/mods-available/custom_status.conf", 
+                  :name => "/etc/apache2/mods-available/status.conf", 
                   :ensures => 'present', 
                   :requires => get_package("apache2")})
-        present_apache_module("custom_status", :requires => get_file("/etc/apache2/mods-available/custom_status.conf"))
+
+        # present_apache_module("custom_status", :requires => get_file("/etc/apache2/mods-available/custom_status.conf"))
+        # has_symlink({:name => "/etc/apache2/mods-enabled/custom_status.conf", 
+        #              :source => "/etc/apache2/mods-available/custom_status.conf",
+        #              :requires => get_file("/etc/apache2/mods-available/custom_status.conf") })
  
         has_package("lynx") # todo, remove this dependency
       end
